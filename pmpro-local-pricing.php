@@ -202,7 +202,8 @@ function pmpro_local_show_local_cost_discount_text( $cost, $level, $tags, $short
 
 		$local_initial = $level->initial_payment * $exchange_rate;
 		// Let's figure out the price?
-		$cost .= '(<strong><span id="pmpro-local-exchange-rate">~' . $currency . pmpro_round_price_as_string( $local_initial ) . '</span></strong>)';	
+		$cost .= '(<strong><span id="pmpro-local-exchange-rate">~' . $currency . pmpro_round_price_as_string( $local_initial ) . '</span></strong>)';
+		$cost .= '<p id="pmpro-local-exchange-rate-hint">Your actual price will be converted at checkout based on current exchange rates.</p>';
 	}
 
 	return $cost;
