@@ -22,7 +22,7 @@ function pmpro_local_get_users_location_from_IP() {
 	}
 
 	// Get the user's country from IP
-	$user_ip = $_SERVER['REMOTE_ADDR'];
+	$user_ip = sanitize_text_field( $_SERVER['REMOTE_ADDR'] );
 
 	// Local server, just bail.
 	if ( $user_ip === '127.0.0.1' ) {
@@ -161,13 +161,12 @@ function pmpro_local_show_local_cost_text( $cost, $level, $tags, $short ) {
 		return $cost;
 	}
 
-	$cost .= '( <strong>~' . $currency . pmpro_round_price_as_string( $local_initial ) . ' </strong>)';
-	$cost .= '<p><i>Your actual price will be converted at checkout based on current exchange rates.</i></p>';
+	$cost .= '(<strong><span id="pmpro-local-exchange-rate">~' . $currency . pmpro_round_price_as_string( $local_initial ) . '</span></strong>)';
+	$cost .= '<p id="pmpro-local-exchange-rate-hint">Your actual price will be converted at checkout based on current exchange rates.</p>';
 
 	// If the country has a discount code let's show it at checkout.
 	if ( isset( $discounts[ $country ] ) && ! $discount_code ) {
-		// $cost .= '<hr />';
-		$cost .= '<p>' . sprintf( 'Use the discount code <strong>%s</strong> to receive a discounted regional price.', $discounts[ $country ] ) . '</p>';
+		$cost .= '<p id="pmpro-local-discount-nudge">' . sprintf( 'Use the discount code <strong>%s</strong> to receive a discounted regional price.', $discounts[ $country ] ) . '</p>';
 	}
 
 	return $cost;
@@ -201,27 +200,14 @@ function pmpro_local_show_local_cost_discount_text( $cost, $level, $tags, $short
 
 		$exchange_rate = pmpro_local_exchange_rate( get_option( 'pmpro_currency' ), $currency );
 
-		$local_price = $level->initial_payment * $exchange_rate;
+		$local_initial = $level->initial_payment * $exchange_rate;
 		// Let's figure out the price?
-		$cost .= '( <strong>~' . $currency . pmpro_round_price_as_string( $local_price ) . ' </strong>)';
+		$cost .= '(<strong><span id="pmpro-local-exchange-rate">~' . $currency . pmpro_round_price_as_string( $local_initial ) . '</span></strong>)';	
 	}
 
 	return $cost;
 }
 add_filter( 'pmpro_level_cost_text', 'pmpro_local_show_local_cost_discount_text', 15, 4 );
-
-
-// Get the discount pricing? /// Remove
-function pmpro_local_get_discount_code_price( $code, $level_id ) {
-	$discount_code = new PMPro_Discount_Code( $code );
-
-	$discount_level_settings = $discount_code->levels[ $level_id ];
-
-	$initial_payment = $discount_level_settings['initial_payment'];
-
-	return $initial_payment;
-
-}
 
 /**
  * Let's check the discount code when it is applied.
