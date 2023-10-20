@@ -17,9 +17,9 @@ use GeoIp2\Database\Reader;
 function pmpro_local_get_users_location_from_IP() {
 
 	// We've already got it in the session, bail.
-	if ( pmpro_get_session_var( 'pmpro_local_country' ) ) {
-		return;
-	}
+	//if ( pmpro_get_session_var( 'pmpro_local_country' ) ) {
+	//	return;
+	//}
 
 	// Get the user's country from IP
 	$user_ip = sanitize_text_field( $_SERVER['REMOTE_ADDR'] );
@@ -42,6 +42,8 @@ function pmpro_local_get_users_location_from_IP() {
 
 	// Set the session now.
 	pmpro_set_session_var( 'pmpro_local_country', $country );
+
+	d( $country );
 }
 add_action( 'pmpro_checkout_preheader_before_get_level_at_checkout', 'pmpro_local_get_users_location_from_IP' );
 
@@ -150,7 +152,8 @@ function pmpro_local_show_local_cost_text( $cost, $level, $tags, $short ) {
 
 	$exchange_rate = pmpro_local_exchange_rate( get_option( 'pmpro_currency' ), $currency );
 
-	if ( $exchange_rate < 1 ) {
+	// There shouldn't be any currency where the exchange rate is < .1.
+	if ( $exchange_rate < 0.1 ) {
 		return $cost;
 	}
 
