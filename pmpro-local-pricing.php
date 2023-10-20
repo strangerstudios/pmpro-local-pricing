@@ -93,7 +93,7 @@ function pmpro_local_exchange_rate( $site_currency, $currency ) {
 
 	// Make a remote request to openexchangerate.org
 	$params = array(
-		'app_id' => esc_attr( get_option( 'pmpro_local_app_id' ) ),
+		'app_id' => esc_attr( get_option( 'pmpro_local_pricing_app_id' ) ),
 		'base'   => $site_currency,
 	);
 

@@ -7,10 +7,10 @@ function pmpro_local_payment_option_fields( $options, $gateway ) {
     $app_id = get_option( 'pmpro_local_pricing_app_id' );
 ?>
     <tr class="pmpro_settings_divider">
-				<td colspan="2">
-					<hr>
-					<h3><?php esc_html_e( 'Localized Pricing Settings', 'pmpro-local-pricing' ); ?></h3>
-				</td>
+        <td colspan="2">
+            <hr>
+            <h3><?php esc_html_e( 'Localized Pricing Settings', 'pmpro-local-pricing' ); ?></h3>
+        </td>
     </tr>
     <tr>
         <th><label for="pmpro_local_app_id"><?php esc_html_e( 'App ID:', 'pmpro-local-pricing' ); ?></label></th>
