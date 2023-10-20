@@ -17,9 +17,9 @@ use GeoIp2\Database\Reader;
 function pmpro_local_get_users_location_from_IP() {
 
 	// We've already got it in the session, bail.
-	//if ( pmpro_get_session_var( 'pmpro_local_country' ) ) {
-	//	return;
-	//}
+	if ( pmpro_get_session_var( 'pmpro_local_country' ) ) {
+		return;
+	}
 
 	// Get the user's country from IP
 	$user_ip = sanitize_text_field( $_SERVER['REMOTE_ADDR'] );
@@ -42,8 +42,6 @@ function pmpro_local_get_users_location_from_IP() {
 
 	// Set the session now.
 	pmpro_set_session_var( 'pmpro_local_country', $country );
-
-	d( $country );
 }
 add_action( 'pmpro_checkout_preheader_before_get_level_at_checkout', 'pmpro_local_get_users_location_from_IP' );
 
@@ -159,12 +157,18 @@ function pmpro_local_show_local_cost_text( $cost, $level, $tags, $short ) {
 
 	// Let's see if a discount code is used.
 	$local_initial = $level->initial_payment * $exchange_rate;
+	$local_billing = $level->billing_amount * $exchange_rate;
 
 	if ( $local_initial < 1 ) {
 		return $cost;
 	}
 
-	$cost .= '(<strong><span id="pmpro-local-exchange-rate">~' . $currency . pmpro_round_price_as_string( $local_initial ) . '</span></strong>)';
+	if ( $level->initial_payment == $level->billing_amount ) {
+		$cost .= '(<strong><span id="pmpro-local-exchange-rate">~' . $currency . pmpro_round_price_as_string( $local_initial ) . '</span></strong>)';
+	} else {
+		$cost .= '(<strong><span id="pmpro-local-exchange-rate">' . esc_html( sprintf( __( '~%s now and then %s per %s.', 'pmpro-local-pricing' ), $currency . pmpro_round_price_as_string( $local_initial ), $currency . pmpro_round_price_as_string( $local_billing ), $level->cycle_period ) ) . '</span></strong>)';
+	}
+	
 	$cost .= '<p id="pmpro-local-exchange-rate-hint">Your actual price will be converted at checkout based on current exchange rates.</p>';
 
 	// If the country has a discount code let's show it at checkout.
