@@ -173,7 +173,7 @@ function pmpro_local_show_local_cost_text( $cost, $level, $tags, $short ) {
 
 	// If the country has a discount code let's show it at checkout.
 	if ( isset( $discounts[ $country ] ) && ! $discount_code ) {
-		$cost .= '<p id="pmpro-local-discount-nudge">' . sprintf( 'Use the discount code <strong>%s</strong> to receive a discounted regional price.', $discounts[ $country ] ) . '</p>';
+		$cost .= '<p id="pmpro-local-discount-nudge">' . sprintf( 'Use the discount code %s to receive a discounted regional price.', esc_html( $discount_code ) ) . '</p>';
 	}
 
 	return $cost;
