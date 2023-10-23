@@ -194,7 +194,7 @@ function pmpro_local_check_discount_code( $okay, $dbcode, $level_id, $discount_c
 	$country          = pmpro_get_session_var( 'pmpro_local_country' );
 
 	// Discount code entered is part of the discounted countries.
-	if ( in_array( $discount_code, $country_discount ) ) {
+	if ( in_array( strtoupper( $discount_code ), $country_discount ) ) {
 		// Most likely the user is not from the discounted country for the discount code, it's not okay.
 		// No discount code found for that country.
 		if ( empty( $country_discount[ $country ] ) ) {
@@ -208,8 +208,7 @@ function pmpro_local_check_discount_code( $okay, $dbcode, $level_id, $discount_c
 
 	// Show an error message that things aren't okay.
 	if ( ! $okay ) {
-		$pmpro_msg  = esc_html__( 'Sorry, you do not qualify to redeem this discount code.', 'pmpro-local-pricing' );
-		$pmpro_msgt = 'pmpro_error';
+		pmpro_setMessage( sprintf( esc_html__( 'Sorry, you do not qualify to redeem this discount code: %s', 'pmpro-local-pricing' ), strtoupper( $discount_code ) ), 'pmpro_error' );
 	}
 
 	return $okay;
@@ -302,7 +301,6 @@ function pmpro_local_pricing_discounted_countries() {
 		// 'CA' => 'CANADA10',
 		// 'ZA' => 'LEKKER',
 		// 'GB' => 'INIT'
-		// 'IN' => 'INDIADISCOUNT',
 	);
 
 	return apply_filters( 'pmpro_local_pricing_discounted_countries', $country_discount_code );
