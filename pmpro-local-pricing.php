@@ -18,7 +18,7 @@ function pmpro_local_get_users_location_from_IP() {
 
 	// We've already got it in the session, bail.
 	if ( pmpro_get_session_var( 'pmpro_local_country' ) ) {
-		///return;
+		return;
 	}
 
 	// Get the user's country from IP
@@ -173,7 +173,7 @@ function pmpro_local_show_local_cost_text( $cost, $level, $tags, $short ) {
 
 	// If the country has a discount code let's show it at checkout.
 	if ( isset( $discounts[ $country ] ) && ! $discount_code ) {
-		$cost .= '<p id="pmpro-local-discount-nudge">' . sprintf( 'Use the discount code %s to receive a discounted regional price.', esc_html( $discount_code ) ) . '</p>';
+		$cost .= '<p id="pmpro-local-discount-nudge">' . sprintf( 'Use the discount code %s to receive a discounted regional price.', '<strong>' . esc_html( $discount_code ) . '</strong>' ) . '</p>';
 	}
 
 	return $cost;
