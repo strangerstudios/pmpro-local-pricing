@@ -49,6 +49,7 @@ add_action( 'pmpro_checkout_preheader_before_get_level_at_checkout', 'pmpro_loca
  * Get the user's local country from session.
  */
 function pmpro_local_get_local_country() {
+	return 'IN';
 	return pmpro_get_session_var( 'pmpro_local_country' ) ? pmpro_get_session_var( 'pmpro_local_country' ) : false;
 }
 
@@ -138,23 +139,15 @@ function pmpro_local_exchange_rate( $site_currency, $currency ) {
 /**
  * Get the local cost for the user's currency.
  *
- * @return string $cost The ammended cost text to show localized pricing based on the exchange rate.
+ * @return string $cost The local cost for this level/code.
  */
-function pmpro_local_show_local_cost_text() {	
-	// Make sure we have the params we need.
-	if ( empty( $_REQUEST['pmpro_level_id'] ) ) {
-		exit;
-	}
-
-	// Get discount code if given.
-	$discount_code = isset( $_REQUEST['pmpro_discount_code'] ) ? sanitize_text_field( $_REQUEST['pmpro_discount_code'] ) : false;
-
+function pmpro_local_get_local_cost_text( $level_id, $discount_code = false ) {
 	$level = pmpro_getLevelAtCheckout( intval( $_REQUEST['pmpro_level_id'] ), $discount_code );
 	$currency = pmpro_local_get_currency_based_on_location();
 
 	// If there's no difference in the currency between the user, or unable to get the currency just bail.
 	if ( ! $currency ) {
-		exit;
+		return;
 	}
 
 	$country   = pmpro_local_get_local_country();
@@ -164,7 +157,7 @@ function pmpro_local_show_local_cost_text() {
 
 	// There shouldn't be any currency where the exchange rate is < .1.
 	if ( $exchange_rate < 0.1 ) {
-		exit;
+		return;
 	}
 
 	// Let's see if a discount code is used.
@@ -172,7 +165,7 @@ function pmpro_local_show_local_cost_text() {
 	$local_billing = $level->billing_amount * $exchange_rate;
 
 	if ( $local_initial < 1 ) {
-		exit;
+		return;
 	}
 
 	if ( $level->initial_payment == $level->billing_amount ) {
@@ -189,21 +182,51 @@ function pmpro_local_show_local_cost_text() {
 		$cost .= '<p id="pmpro-local-discount-nudge">' . sprintf( 'Use the discount code %s to receive a discounted regional price.', '<strong>' . esc_html( $discounts[ $country ] ) . '</strong>' ) . '</p>';
 	}
 
-	echo $cost;
+	return $cost;
+}
+
+function pmpro_local_get_local_cost_callback() {
+	// Make sure we have the params we need.
+	if ( empty( $_REQUEST['level'] ) ) {
+		exit;
+	}
+
+	// Get params.
+	$level_id = intval( $_REQUEST['level'] );
+	$discount_code = isset( $_REQUEST['discount_code'] ) ? sanitize_text_field( $_REQUEST['pmpro_discount_code'] ) : false;
+
+	// Show local price.
+	echo pmpro_local_get_local_cost_text( $level_id, $discount_code );
+
 	exit;
 }
-add_action( 'wp_ajax_pmpro_local_get_local_cost_text', 'pmpro_local_show_local_cost_text' );
-add_action( 'wp_ajax_nopriv_pmpro_local_get_local_cost_text', 'pmpro_local_show_local_cost_text' );
+add_action( 'wp_ajax_pmpro_local_get_local_cost_text', 'pmpro_local_get_local_cost_callback' );
+add_action( 'wp_ajax_nopriv_pmpro_local_get_local_cost_text', 'pmpro_local_get_local_cost_callback' );
 
 /**
  * Add space for us to show the localized price via AJAX.
+ * If we're inside the applydiscountcode AJAX call,
+ * just insert our local price right now.
  */
 function pmpro_local_insert_local_price_div( $cost, $level, $tags, $short ) {
-	if ( ! pmpro_is_checkout() || pmpro_isLevelFree( $level ) ) {
+	// Free is free.
+	if ( pmpro_isLevelFree( $level ) ) {
 		return $cost;
 	}
 
-	$cost .= '<div id="pmpro-local-price"></div>';		
+	// Only filter the checkout page or applydiscoutcode AJAX call.
+	if ( ! pmpro_is_checkout() && ( empty( $_REQUEST['action'] ) || $_REQUEST['action'] !== 'applydiscountcode' ) ) {
+		return $cost;
+	}
+
+	$cost .= '<div id="pmpro-local-price">';
+
+	// If we're applying a discount code, insert the local price now.
+	if ( ! empty( $_REQUEST['action'] ) && $_REQUEST['action'] === 'applydiscountcode' ) {		
+		$cost .= pmpro_local_get_local_cost_text( $level->id, sanitize_text_field( $_REQUEST['code'] ) );
+	}
+
+	$cost .= '</div>';		
 	return $cost;
 }
 add_filter( 'pmpro_level_cost_text', 'pmpro_local_insert_local_price_div', 10, 4 );
@@ -227,7 +250,7 @@ function pmpro_local_check_discount_code( $okay, $dbcode, $level_id, $discount_c
 		// No discount code found for that country.
 		if ( empty( $country_discount[ $country ] ) ) {
 			$okay = false;
-		} elseif ( $discount_code === $country_discount[ $country ] ) { // If the discounted code enter matches the user's location then it's okay.
+		} elseif ( strtoupper( $discount_code ) === $country_discount[ $country ] ) { // If the discounted code enter matches the user's location then it's okay.
 			$okay = true;
 		} else {
 			$okay = false; // Probably not okay? ///Check this.
