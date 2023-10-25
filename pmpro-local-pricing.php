@@ -15,14 +15,13 @@ use GeoIp2\Database\Reader;
  * Get the user's location from their IP address and store it in a session.
  */
 function pmpro_local_get_users_location_from_IP() {
-
 	// We've already got it in the session, bail.
 	if ( pmpro_get_session_var( 'pmpro_local_country' ) ) {
 		return;
 	}
 
 	// Get the user's country from IP
-	$user_ip = sanitize_text_field( $_SERVER['REMOTE_ADDR'] );
+	$user_ip = sanitize_text_field( pmpro_get_ip() );
 
 	// Local server, just bail.
 	if ( $user_ip === '127.0.0.1' ) {
@@ -248,11 +247,11 @@ function pmpro_local_check_discount_code( $okay, $dbcode, $level_id, $discount_c
 		// Most likely the user is not from the discounted country for the discount code, it's not okay.
 		// No discount code found for that country.
 		if ( empty( $country_discount[ $country ] ) ) {
-			$okay = false;
+			$okay = 'Sorry, you do not qualify to redeem this discount code.';
 		} elseif ( strtoupper( $discount_code ) === $country_discount[ $country ] ) { // If the discounted code enter matches the user's location then it's okay.
 			$okay = true;
 		} else {
-			$okay = false; // Probably not okay? ///Check this.
+			$okay = 'Sorry, you do not qualify to redeem this discount code.';
 		}
 	}
 
