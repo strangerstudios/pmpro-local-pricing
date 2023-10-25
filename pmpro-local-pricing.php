@@ -49,7 +49,6 @@ add_action( 'pmpro_checkout_preheader_before_get_level_at_checkout', 'pmpro_loca
  * Get the user's local country from session.
  */
 function pmpro_local_get_local_country() {
-	return 'IN';
 	return pmpro_get_session_var( 'pmpro_local_country' ) ? pmpro_get_session_var( 'pmpro_local_country' ) : false;
 }
 
@@ -220,7 +219,7 @@ function pmpro_local_check_discount_code( $okay, $dbcode, $level_id, $discount_c
 	}
 
 	$country_discount = pmpro_local_pricing_discounted_countries();
-	$country          = pmpro_get_session_var( 'pmpro_local_country' );
+	$country          = pmpro_local_get_local_country();
 
 	// Discount code entered is part of the discounted countries.
 	if ( in_array( strtoupper( $discount_code ), $country_discount ) ) {
@@ -278,7 +277,7 @@ function pmpro_local_registration_checks( $okay ) {
 	// Check discount code against the list of allowed codes.
 	$discount_code    = $_REQUEST['discount_code']; // Don't sanitize here, we're just checking against an array and not storing it anywhere.
 	$country_discount = pmpro_local_pricing_discounted_countries();
-	$country          = pmpro_get_session_var( 'pmpro_local_country' );
+	$country          = pmpro_local_get_local_country();
 
 	// Discount code entered is part of the discounted countries.
 	if ( in_array( $discount_code, $country_discount ) ) {
