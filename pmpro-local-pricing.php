@@ -48,8 +48,7 @@ add_action( 'pmpro_checkout_preheader_before_get_level_at_checkout', 'pmpro_loca
 /**
  * Get the user's local country from session.
  */
-function pmpro_local_get_local_country() {
-	return 'IN';
+function pmpro_local_get_local_country() {	
 	return pmpro_get_session_var( 'pmpro_local_country' ) ? pmpro_get_session_var( 'pmpro_local_country' ) : false;
 }
 
@@ -142,7 +141,7 @@ function pmpro_local_exchange_rate( $site_currency, $currency ) {
  * @return string $cost The local cost for this level/code.
  */
 function pmpro_local_get_local_cost_text( $level_id, $discount_code = false ) {
-	$level = pmpro_getLevelAtCheckout( intval( $_REQUEST['pmpro_level_id'] ), $discount_code );
+	$level = pmpro_getLevelAtCheckout( intval( $_REQUEST['level'] ), $discount_code );
 	$currency = pmpro_local_get_currency_based_on_location();
 
 	// If there's no difference in the currency between the user, or unable to get the currency just bail.
@@ -168,10 +167,10 @@ function pmpro_local_get_local_cost_text( $level_id, $discount_code = false ) {
 		return;
 	}
 
+	$allowed_html = array( 'strong' => array() );
 	if ( $level->initial_payment == $level->billing_amount ) {
-		$cost = '<strong><span id="pmpro-local-exchange-rate">~' . $currency . pmpro_round_price_as_string( $local_initial ) . '</span></strong>';
-	} else {
-		$allowed_html = array( 'strong' => array() );
+		$cost = '<p id="pmpro-local-exchange-rate">' . wp_kses( sprintf( __( 'In your local currency, the price is <strong>~%s</strong>.', 'pmpro-local-pricing' ), $currency . pmpro_round_price_as_string( $local_initial ) ), $allowed_html ) . '</p>';
+	} else {		
 		$cost = '<p id="pmpro-local-exchange-rate">' . wp_kses( sprintf( __( 'In your local currency, the price is <strong>~%s</strong> now and then <strong>~%s per %s</strong>.', 'pmpro-local-pricing' ), $currency . pmpro_round_price_as_string( $local_initial ), $currency . pmpro_round_price_as_string( $local_billing ), $level->cycle_period ), $allowed_html ) . '</p>';
 	}
 	
@@ -193,7 +192,7 @@ function pmpro_local_get_local_cost_callback() {
 
 	// Get params.
 	$level_id = intval( $_REQUEST['level'] );
-	$discount_code = isset( $_REQUEST['discount_code'] ) ? sanitize_text_field( $_REQUEST['pmpro_discount_code'] ) : false;
+	$discount_code = isset( $_REQUEST['discount_code'] ) ? sanitize_text_field( $_REQUEST['discount_code'] ) : false;
 
 	// Show local price.
 	echo pmpro_local_get_local_cost_text( $level_id, $discount_code );
@@ -276,7 +275,14 @@ function pmpro_local_enqueue_scripts() {
 	}
 	
 	// Enqueue our JS.	
-	wp_enqueue_script( 'pmpro-local-pricing', plugins_url( 'js/pmpro-local-pricing.js', __FILE__ ), null, '1.0', true );	
+	wp_register_script( 'pmpro-local-pricing',
+						  plugins_url( 'js/pmpro-local-pricing.js', __FILE__ ),
+						  array('jquery'),
+						  '1.0' );
+	wp_localize_script( 'pmpro-local-pricing', 'pmpro_local', array(
+		'ajaxurl' => admin_url( 'admin-ajax.php' ),		
+		));
+	wp_enqueue_script( 'pmpro-local-pricing' );
 }
 add_action( 'wp_enqueue_scripts', 'pmpro_local_enqueue_scripts' );
 
