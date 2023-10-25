@@ -46,6 +46,14 @@ function pmpro_local_get_users_location_from_IP() {
 add_action( 'pmpro_checkout_preheader_before_get_level_at_checkout', 'pmpro_local_get_users_location_from_IP' );
 
 /**
+ * Get the user's local country from session.
+ */
+function pmpro_local_get_local_country() {
+	return 'IN';
+	return pmpro_get_session_var( 'pmpro_local_country' ) ? pmpro_get_session_var( 'pmpro_local_country' ) : false;
+}
+
+/**
  * Get the user's exchange rate based on their location
  *
  * @return string $exchange_rate The exchange rate for the user's currency based on their location. It is returned as a string for more accurate rounding.
@@ -53,7 +61,7 @@ add_action( 'pmpro_checkout_preheader_before_get_level_at_checkout', 'pmpro_loca
 function pmpro_local_get_currency_based_on_location() {
 
 	// Get the user's location from the session or try to get it again.
-	$user_location = pmpro_get_session_var( 'pmpro_local_country' ) ? pmpro_get_session_var( 'pmpro_local_country' ) : false;
+	$user_location = pmpro_local_get_local_country();	
 
 	// If the user's location is not set, bail.
 	if ( ! $user_location ) {
@@ -129,30 +137,35 @@ function pmpro_local_exchange_rate( $site_currency, $currency ) {
 }
 
 /**
- * Adjust the cost text to show the localized price.
+ * Get the local cost for the user's currency.
  *
  * @return string $cost The ammended cost text to show localized pricing based on the exchange rate.
  */
-function pmpro_local_show_local_cost_text( $cost, $level, $tags, $short ) {
-	if ( ! pmpro_is_checkout() || pmpro_isLevelFree( $level ) ) {
-		return $cost;
+function pmpro_local_show_local_cost_text() {	
+	// Make sure we have the params we need.
+	if ( empty( $_REQUEST['pmpro_level_id'] ) ) {
+		exit;
 	}
 
+	// Get discount code if given.
+	$discount_code = isset( $_REQUEST['pmpro_discount_code'] ) ? sanitize_text_field( $_REQUEST['pmpro_discount_code'] ) : false;
+
+	$level = pmpro_getLevelAtCheckout( intval( $_REQUEST['pmpro_level_id'] ), $discount_code );
 	$currency = pmpro_local_get_currency_based_on_location();
 
 	// If there's no difference in the currency between the user, or unable to get the currency just bail.
 	if ( ! $currency ) {
-		return $cost;
+		exit;
 	}
 
-	$country   = pmpro_get_session_var( 'pmpro_local_country' );
+	$country   = pmpro_local_get_local_country();
 	$discounts = pmpro_local_pricing_discounted_countries();
 
 	$exchange_rate = pmpro_local_exchange_rate( get_option( 'pmpro_currency' ), $currency );
 
 	// There shouldn't be any currency where the exchange rate is < .1.
 	if ( $exchange_rate < 0.1 ) {
-		return $cost;
+		exit;
 	}
 
 	// Let's see if a discount code is used.
@@ -160,25 +173,41 @@ function pmpro_local_show_local_cost_text( $cost, $level, $tags, $short ) {
 	$local_billing = $level->billing_amount * $exchange_rate;
 
 	if ( $local_initial < 1 ) {
-		return $cost;
+		exit;
 	}
 
 	if ( $level->initial_payment == $level->billing_amount ) {
-		$cost .= '(<strong><span id="pmpro-local-exchange-rate">~' . $currency . pmpro_round_price_as_string( $local_initial ) . '</span></strong>)';
+		$cost = '<strong><span id="pmpro-local-exchange-rate">~' . $currency . pmpro_round_price_as_string( $local_initial ) . '</span></strong>';
 	} else {
-		$cost .= '(<strong><span id="pmpro-local-exchange-rate">' . esc_html( sprintf( __( '~%s now and then %s per %s.', 'pmpro-local-pricing' ), $currency . pmpro_round_price_as_string( $local_initial ), $currency . pmpro_round_price_as_string( $local_billing ), $level->cycle_period ) ) . '</span></strong>)';
+		$allowed_html = array( 'strong' => array() );
+		$cost = '<p id="pmpro-local-exchange-rate">' . wp_kses( sprintf( __( 'In your local currency, the price is <strong>~%s</strong> now and then <strong>~%s per %s</strong>.', 'pmpro-local-pricing' ), $currency . pmpro_round_price_as_string( $local_initial ), $currency . pmpro_round_price_as_string( $local_billing ), $level->cycle_period ), $allowed_html ) . '</p>';
 	}
 	
 	$cost .= '<p id="pmpro-local-exchange-rate-hint">Your actual price will be converted at checkout based on current exchange rates.</p>';
 
 	// If the country has a discount code let's show it at checkout.
 	if ( isset( $discounts[ $country ] ) && ! $discount_code ) {
-		$cost .= '<p id="pmpro-local-discount-nudge">' . sprintf( 'Use the discount code %s to receive a discounted regional price.', '<strong>' . esc_html( $discount_code ) . '</strong>' ) . '</p>';
+		$cost .= '<p id="pmpro-local-discount-nudge">' . sprintf( 'Use the discount code %s to receive a discounted regional price.', '<strong>' . esc_html( $discounts[ $country ] ) . '</strong>' ) . '</p>';
 	}
 
+	echo $cost;
+	exit;
+}
+add_action( 'wp_ajax_pmpro_local_get_local_cost_text', 'pmpro_local_show_local_cost_text' );
+add_action( 'wp_ajax_nopriv_pmpro_local_get_local_cost_text', 'pmpro_local_show_local_cost_text' );
+
+/**
+ * Add space for us to show the localized price via AJAX.
+ */
+function pmpro_local_insert_local_price_div( $cost, $level, $tags, $short ) {
+	if ( ! pmpro_is_checkout() || pmpro_isLevelFree( $level ) ) {
+		return $cost;
+	}
+
+	$cost .= '<div id="pmpro-local-price"></div>';		
 	return $cost;
 }
-add_filter( 'pmpro_level_cost_text', 'pmpro_local_show_local_cost_text', 10, 4 );
+add_filter( 'pmpro_level_cost_text', 'pmpro_local_insert_local_price_div', 10, 4 );
 
 /**
  * Let's check the discount code when it is applied.
@@ -215,6 +244,19 @@ function pmpro_local_check_discount_code( $okay, $dbcode, $level_id, $discount_c
 
 }
 add_filter( 'pmpro_check_discount_code', 'pmpro_local_check_discount_code', 10, 4 );
+
+/**
+ * Enqueue our JS at checkout.
+ */
+function pmpro_local_enqueue_scripts() {
+	if ( ! pmpro_is_checkout() ) {
+		return;
+	}
+	
+	// Enqueue our JS.	
+	wp_enqueue_script( 'pmpro-local-pricing', plugins_url( 'js/pmpro-local-pricing.js', __FILE__ ), null, '1.0', true );	
+}
+add_action( 'wp_enqueue_scripts', 'pmpro_local_enqueue_scripts' );
 
 /**
  * Registration checks to ensure that the code used is allowed by the customer based on their location.
