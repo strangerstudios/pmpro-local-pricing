@@ -220,8 +220,10 @@ function pmpro_local_insert_local_price_div( $cost, $level, $tags, $short ) {
 	$cost .= '<div id="pmpro-local-price">';
 
 	// If we're applying a discount code, insert the local price now.
-	if ( ! empty( $_REQUEST['action'] ) && $_REQUEST['action'] === 'applydiscountcode' ) {		
+	if ( ! empty( $_REQUEST['action'] ) && $_REQUEST['action'] === 'applydiscountcode' ) {
+		$cost .= '<div class="pmpro-local-price_inner">';
 		$cost .= pmpro_local_get_local_cost_text( $level->id, sanitize_text_field( $_REQUEST['code'] ) );
+		$cost .= '</div>';
 	}
 
 	$cost .= '</div>';		
