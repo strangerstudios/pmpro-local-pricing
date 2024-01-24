@@ -140,7 +140,7 @@ function pmpro_local_exchange_rate( $site_currency, $currency ) {
  * @return string $cost The local cost for this level/code.
  */
 function pmpro_local_get_local_cost_text( $level_id, $discount_code = false ) {
-	$level = pmpro_getLevelAtCheckout( intval( $_REQUEST['level'] ), $discount_code );
+	$level = pmpro_getLevelAtCheckout( intval( $level_id ), $discount_code );
 	$currency = pmpro_local_get_currency_based_on_location();
 
 	// If there's no difference in the currency between the user, or unable to get the currency just bail.
@@ -185,13 +185,14 @@ function pmpro_local_get_local_cost_text( $level_id, $discount_code = false ) {
 
 function pmpro_local_get_local_cost_callback() {
 	// Make sure we have the params we need.
-	if ( empty( $_REQUEST['level'] ) ) {
+	$checkout_level = pmpro_getLevelAtCheckout();
+	if ( empty( $checkout_level ) || empty( $checkout_level->id ) ) {
 		exit;
 	}
 
 	// Get params.
-	$level_id = intval( $_REQUEST['level'] );
-	$discount_code = isset( $_REQUEST['discount_code'] ) ? sanitize_text_field( $_REQUEST['discount_code'] ) : false;
+	$level_id = intval( $checkout_level->id );
+	$discount_code = empty( $checkout_level->discount_code ) ? false : sanitize_text_field( $checkout_level->discount_code );
 
 	// Show local price.
 	echo pmpro_local_get_local_cost_text( $level_id, $discount_code );
@@ -300,12 +301,13 @@ function pmpro_local_registration_checks( $okay ) {
 	}
 
 	// If a discount code is not set, just return.
-	if ( ! isset( $_REQUEST['discount_code'] ) ) {
+	$checkout_level = pmpro_getLevelAtCheckout();
+	if ( empty( $checkout_level ) || empty( $checkout_level->discount_code ) ) {
 		return $okay;
 	}
 
 	// Check discount code against the list of allowed codes.
-	$discount_code    = $_REQUEST['discount_code']; // Don't sanitize here, we're just checking against an array and not storing it anywhere.
+	$discount_code    = $checkout_level->discount_code; // Don't sanitize here, we're just checking against an array and not storing it anywhere.
 	$country_discount = pmpro_local_pricing_discounted_countries();
 	$country          = pmpro_local_get_local_country();
 
