@@ -307,7 +307,7 @@ function pmpro_local_registration_checks( $okay ) {
 	}
 
 	// Check discount code against the list of allowed codes.
-	$discount_code    = $checkout_level->discount_code; // Don't sanitize here, we're just checking against an array and not storing it anywhere.
+	$discount_code    = $checkout_level->discount_code;
 	$country_discount = pmpro_local_pricing_discounted_countries();
 	$country          = pmpro_local_get_local_country();
 
