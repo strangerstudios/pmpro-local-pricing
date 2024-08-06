@@ -8,7 +8,7 @@ Stable tag: 1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Dynamically convert level pricing at checkout to the approximate rate in the visitor's local currency, as detected by their IP address and geolocation.
+Dynamically convert level pricing at checkout to the approximate rate in the visitor's local currency.
 
 == Description ==
 
