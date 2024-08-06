@@ -1,8 +1,8 @@
 ### All Submissions:
 
-* [ ] Have you followed the [Contributing guideline](https://github.com/strangerstudios/pmpro-gift-levels/blob/master/.github/CONTRIBUTING.md)?
+* [ ] Have you followed the [Contributing guideline](https://github.com/strangerstudios/pmpro-local-pricing/blob/master/.github/CONTRIBUTING.md)?
 * [ ] Does your code follow the [WordPress' coding standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/)?
-* [ ] Have you checked to ensure there aren't other open [Pull Requests](https://github.com/strangerstudios/pmpro-gift-levels/pulls) for the same update/change?
+* [ ] Have you checked to ensure there aren't other open [Pull Requests](https://github.com/strangerstudios/pmpro-local-pricing/pulls) for the same update/change?
 
 <!-- Mark completed items with an [x] -->
 

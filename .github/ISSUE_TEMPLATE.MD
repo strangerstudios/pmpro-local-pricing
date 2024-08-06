@@ -32,7 +32,7 @@ I was expecting to see...
 
 <!-- MARK COMPLETED ITEMS WITH AN [x] -->
 
-- [ ] This bug happens with only Paid Memberships Pro plugin and Paid Memberships Pro - Gift Membership active
+- [ ] This bug happens with only Paid Memberships Pro plugin and Paid Memberships Pro - Local Pricing active
 - [ ] This bug happens with a default WordPress theme active, or [Memberlite](https://wordpress.org/themes/memberlite/)
 - [ ] I can reproduce this bug consistently using the steps above
 
