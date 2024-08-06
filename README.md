@@ -1,4 +1,4 @@
-![](pmpro-local-pricing-banner.jpg)
+![](pmpro-local-pricing-banner.png)
 
 # [Paid Memberships Pro - Local Pricing](https://www.paidmembershipspro.com/add-ons/local-pricing/) #
 [comment]: # (Generate badges from shields.io, only works for .org plugins to get other stats etc. We'd have to create our own endpoints for Premium plugins)
