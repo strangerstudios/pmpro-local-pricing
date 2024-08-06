@@ -1,69 +1,31 @@
 === Paid Memberships Pro - Local Pricing ===
-Contributors: strangerstudios, paidmembershipspro
-Tags: pricing
-Requires at least: 5.2
-Tested up to: 6.2
+Contributors: strangerstudios
+Tags: pricing, geolocation, currency
+Requires at least: 5.4
+Tested up to: 6.6
 Requires PHP: 7.0
 Stable tag: 1.0
+License: GPLv3
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Show a localized rate at checkout for all visitors.
+Dynamically convert level pricing at checkout to the approximate rate in the visitor's local currency, as detected by their IP address and geolocation.
 
 == Description ==
 
-Show localized currency rates during checkout for all visitors based on their IP address and geolocation. Offer a discount code to visitors from a specific country.
-
-### About Paid Memberships Pro
-
-[Paid Memberships Pro is a WordPress membership plugin](https://www.paidmembershipspro.com/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-buddypress) that puts you in control. Create what you want and release in whatever format works best for your business.
-
-* Courses & E-Learning
-* Private podcasts
-* Premium Newsletters
-* Private Communities
-* Sell physical & digital goods
-
-Paid Memberships Pro allows anyone to build a membership site—for free. Restrict content, accept payment, and manage subscriptions right from your WordPress admin.
-
-Paid Memberships Pro is built "the WordPress way" with a lean core plugin and over 75 Add Ons to enhance every aspect of your membership site. Each business is different and we encourage customization. For our members we have a library of 300+ recipes to personalize your membership site.
-
-Paid Memberships Pro is the flagship product of Stranger Studios. We are a bootstrapped company which grows when membership sites like yours grow. That means we focus our entire company towards helping you succeed.
-
-[Try Paid Memberships Pro entirely for free on WordPress.org](https://wordpress.org/plugins/paid-memberships-pro/) and see why 100,000+ sites trust us to help them #GetPaid.
+Show an approximate localized currency rate during checkout for visitors based on their IP address and geolocation. Use the geolocation features of this Add On to offer a discount code to visitors from a specific country.
 
 == Installation ==
 
-Note: You must have [Paid Memberships Pro](https://wordpress.org/plugins/paid-memberships-pro/) and [BuddyPress](https://wordpress.org/plugins/buddypress/) or [BuddyBoss](https://www.paidmembershipspro.com/buddyboss-membership-plugin/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-buddypress) installed and activated on your site.
+1. Upload the `pmpro-local-pricing` directory to the `/wp-content/plugins/` directory of your site.
+2. Activate the plugin through the 'Plugins' menu in WordPress.
+3. Navigate to Memberships > Settings > Payment Gateway.
+4. (optional) Add your App ID and save settings. Note: the App ID is only required if your site's default currency is not USD.
 
-### Install PMPro Local Pricing from within WordPress
+Refer to the [Local Pricing Add On documentation page](https://www.paidmembershipspro.com/add-ons/local-pricing/) for more information on how to set up this Add On or for a code recipe to offer unique discount codes based on location.
 
-1. Visit the plugins page within your dashboard and select "Add New"
-1. Search for "PMPro Local Pricing"
-1. Locate this plugin and click "Install"
-1. Activate "Paid Memberships Pro - Local Pricing" through the "Plugins" menu in WordPress
-1. Go to "after activation" below.
-
-### Install PMPro Local Pricing Manually
-
-1. Upload the `pmpro-local-pricing` folder to the `/wp-content/plugins/` directory
-1. Activate "Paid Memberships Pro - Local Pricing" through the "Plugins" menu in WordPress
-1. Go to "after activation" below.
-
-### After Activation: Configure Plugin Settings
-
-= 1. Adding an App ID for openexchangerates.org =
-
-An App ID is required if you need to show an exchange rate for no USD currencies. If your site is using USD as the Paid Memberships Pro currency you may not need to use an API key. 
-You can obtain an App ID at [openexchangerates.org](https://openexchangerates.org/signup). 
-
-To enter your App ID navigate to Memberships > Payment Gateway & SSL Settings > Localized Pricing Settings and enter your App ID and save your settings.
-
-= 2. Linking a discount code to a specific country =
-
-To offer potential customer's a discount code during checkout based on their location requires a small code snippet to achieve - https://gist.github.com/andrewlimaza/0acb93a7eaffc20ebc85748babfdea2e ///Update this eventually.
-
-== Screenshots ==
-
-1. TBD
+== Frequently Asked Questions ==
+= I found a bug in the plugin.
+Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-local-pricing/issues
 
 == Changelog ==
 = 1.0 - TBD =
