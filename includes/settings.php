@@ -9,11 +9,11 @@ function pmpro_local_payment_option_fields( $options, $gateway ) {
     <tr class="pmpro_settings_divider">
         <td colspan="2">
             <hr>
-            <h3><?php esc_html_e( 'Localized Pricing Settings', 'pmpro-local-pricing' ); ?></h3>
+            <h3><?php esc_html_e( 'Local Pricing Settings', 'pmpro-local-pricing' ); ?></h3>
         </td>
     </tr>
     <tr>
-        <th><label for="pmpro_local_app_id"><?php esc_html_e( 'App ID:', 'pmpro-local-pricing' ); ?></label></th>
+        <th><label for="pmpro_local_app_id"><?php esc_html_e( 'App ID', 'pmpro-local-pricing' ); ?></label></th>
         <td>
             <input type="text" name="pmpro_local_app_id" id="pmpro_local_app_id" value="<?php echo esc_attr( $app_id ); ?>"/>
             <p class="description"><?php echo esc_html__( 'Manage your APP ID here: ', 'pmpro-local-pricing' ) . '<a href="https://openexchangerates.org/" target="_blank">https://openexchangerates.org/</a>. ' . esc_html__( 'Please note that a paid account is required if your site currency is not USD.', 'pmpro-local-pricing' ); ?></p>

@@ -1,0 +1,23 @@
+Adding repository files
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch dev
+# Your branch is up to date with 'origin/dev'.
+#
+# Changes to be committed:
+#	new file:   .gitattributes
+#	new file:   .github/CONTRIBUTING.md
+#	new file:   .github/ISSUE_TEMPLATE.MD
+#	new file:   .github/ISSUE_TEMPLATE/bug_report.md
+#	new file:   .github/ISSUE_TEMPLATE/enhancement.md
+#	new file:   .github/ISSUE_TEMPLATE/feature_request.md
+#	new file:   .github/ISSUE_TEMPLATE/support.md
+#	new file:   .github/PULL_REQUEST_TEMPLATE.MD
+#	new file:   .github/workflows/generate-translations.yml
+#	new file:   README.md
+#	new file:   pmpro-local-pricing-banner.png
+#
+# Changes not staged for commit:
+#	modified:   readme.txt
+#
