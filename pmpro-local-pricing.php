@@ -181,7 +181,7 @@ function pmpro_local_get_local_cost_text( $level_id, $discount_code = false ) {
 			sprintf(
 				/* translators: %s: The local price in the user's currency. */
 				__( 'In your local currency, the price is <strong>~%s</strong>.', 'pmpro-local-pricing' ),
-				$currency . pmpro_round_price_as_string( $local_initial )
+				$currency . ' ' . pmpro_round_price_as_string( $local_initial )
 			),
 			$allowed_html
 		);
@@ -192,8 +192,8 @@ function pmpro_local_get_local_cost_text( $level_id, $discount_code = false ) {
 			sprintf(
 				/* translators: 1: The local price for the initial payment in the user's currency. 2: The local price for the recurring price in the user's currency. 3: The billing period. */
 				__( 'In your local currency, the price is <strong>~%1$s</strong> now and then <strong>~%2$s per %3$s</strong>.', 'pmpro-local-pricing' ),
-				$currency . pmpro_round_price_as_string( $local_initial ),
-				$currency . pmpro_round_price_as_string( $local_billing ),
+				$currency . ' ' . pmpro_round_price_as_string( $local_initial ),
+				$currency . ' ' . pmpro_round_price_as_string( $local_billing ),
 				$level->cycle_period
 			),
 			$allowed_html
