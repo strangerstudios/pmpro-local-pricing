@@ -6,4 +6,3 @@ composer.json export-ignore
 composer.lock export-ignore
 pmpro-local-pricing-banner.jpg export-ignore
 README.md export-ignore
-/vendor/ export-ignore
