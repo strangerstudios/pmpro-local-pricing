@@ -31,8 +31,12 @@ function pmpro_local_get_users_location_from_IP() {
 	// Get the user's country from IP
 	$user_ip = sanitize_text_field( pmpro_get_ip() );
 
+	if ( defined( 'PMPRO_LOCAL_TEST_IP' ) ) {
+		$user_ip = PMPRO_LOCAL_TEST_IP;
+	}
+
 	// Local server, just bail.
-	if ( $user_ip === '127.0.0.1' ) {
+	if ( $user_ip === '127.0.0.1' || empty( $user_ip ) || $user_ip === '::1' ) {
 		return;
 	}
 
