@@ -30,5 +30,6 @@ Refer to the [Local Pricing Add On documentation page](https://www.paidmembershi
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-local-pricing/issues
 
 == Changelog ==
-= 1.0 - TBD =
+
+= 1.0 - 2024-08-07 =
 * Initial release
