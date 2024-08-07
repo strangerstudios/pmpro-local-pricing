@@ -60,7 +60,7 @@ add_action( 'pmpro_checkout_preheader_before_get_level_at_checkout', 'pmpro_loca
  * Get the user's local country from session.
  */
 function pmpro_local_get_local_country() {	
-	return pmpro_get_session_var( 'pmpro_local_country' ) ? pmpro_get_session_var( 'pmpro_local_country' ) : false;
+	return pmpro_get_session_var( 'pmpro_local_country' ) ?: false;
 }
 
 /**
@@ -179,7 +179,7 @@ function pmpro_local_get_local_cost_text( $level_id, $discount_code = false ) {
 	}
 
 	$allowed_html = array( 'strong' => array() );
-	if ( $level->initial_payment == $level->billing_amount ) {
+	if ( $level->initial_payment == $level->billing_amount || $level->billing_amount == 0 ) {
 		$cost = '<p id="pmpro-local-exchange-rate">';
 		$cost .= wp_kses(
 			sprintf(
@@ -230,11 +230,10 @@ function pmpro_local_get_local_cost_callback() {
 
 	// Get params.
 	$level_id = intval( $checkout_level->id );
-	$discount_code = empty( $checkout_level->discount_code ) ? false : sanitize_text_field( $checkout_level->discount_code );
+	$discount_code = ! empty( $checkout_level->discount_code ) ? sanitize_text_field( $checkout_level->discount_code ) : false;
 
-	// Show local price.
-	echo pmpro_local_get_local_cost_text( $level_id, $discount_code );
-
+	// Show the local price, function escapes the returned value.
+	echo pmpro_local_get_local_cost_text( $level_id, $discount_code ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	exit;
 }
 add_action( 'wp_ajax_pmpro_local_get_local_cost_text', 'pmpro_local_get_local_cost_callback' );
@@ -260,7 +259,7 @@ function pmpro_local_insert_local_price_div( $cost, $level, $tags, $short ) {
 
 	// If we're applying a discount code, insert the local price now.
 	if ( ! empty( $_REQUEST['action'] ) && $_REQUEST['action'] === 'applydiscountcode' ) {
-		$cost .= '<div class="pmpro-local-price_inner">';
+		$cost .= '<div class="' . esc_attr( pmpro_get_element_class( 'pmpro-local-price_inner' ) ) . '">';
 		$cost .= pmpro_local_get_local_cost_text( $level->id, sanitize_text_field( $_REQUEST['code'] ) );
 		$cost .= '</div>';
 	}
