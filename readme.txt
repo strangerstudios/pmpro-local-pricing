@@ -19,7 +19,9 @@ Show an approximate localized currency rate during checkout for visitors based o
 1. Upload the `pmpro-local-pricing` directory to the `/wp-content/plugins/` directory of your site.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 3. Navigate to Memberships > Settings > Payment Gateway.
-4. (optional) Add your App ID and save settings. Note: the App ID is only required if your site's default currency is not USD.
+4. Enter your App ID and save settings.
+
+Note: currency conversions are processed using the [https://openexchangerates.org/](https://openexchangerates.org/) API. If your site's default currency is USD, you can use an API key linked to a free account at [https://openexchangerates.org/](https://openexchangerates.org/). All other currencies will require a paid plan with the API provider.
 
 Refer to the [Local Pricing Add On documentation page](https://www.paidmembershipspro.com/add-ons/local-pricing/) for more information on how to set up this Add On or for a code recipe to offer unique discount codes based on location.
 
