@@ -1,5 +1,7 @@
 # Items to ignore when downloading a zip
 .gitattributes export-ignore
 .github export-ignore
+composer.json export-ignore
+composer.lock export-ignore
 pmpro-local-pricing-banner.jpg export-ignore
 README.md export-ignore
