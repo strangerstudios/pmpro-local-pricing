@@ -1,0 +1,110 @@
+# Copyright (C) 2024 Paid Memberships Pro
+# This file is distributed under the GPL-3.0.
+msgid ""
+msgstr ""
+"Project-Id-Version: Paid Memberships Pro - Local Pricing 1.0\n"
+"Report-Msgid-Bugs-To: info@paidmembershipspro.com\n"
+"Last-Translator: Paid Memberships Pro <info@paidmembershipspro.com>\n"
+"Language-Team: Paid Memberships Pro <info@paidmembershipspro.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-08-08T01:28:19+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.10.0\n"
+"X-Domain: pmpro-local-pricing\n"
+
+#. Plugin Name of the plugin
+#: pmpro-local-pricing.php
+msgid "Paid Memberships Pro - Local Pricing"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: pmpro-local-pricing.php
+msgid "https://www.paidmembershipspro.com/add-ons/local-pricing/"
+msgstr ""
+
+#. Description of the plugin
+#: pmpro-local-pricing.php
+msgid "Dynamically convert level pricing at checkout to the approximate rate in the visitor's local currency, as detected by their IP address and geolocation."
+msgstr ""
+
+#. Author of the plugin
+#: pmpro-local-pricing.php
+msgid "Paid Memberships Pro"
+msgstr ""
+
+#. Author URI of the plugin
+#: pmpro-local-pricing.php
+msgid "https://www.paidmembershipspro.com"
+msgstr ""
+
+#: includes/settings.php:12
+msgid "Local Pricing Settings"
+msgstr ""
+
+#: includes/settings.php:16
+msgid "App ID"
+msgstr ""
+
+#: includes/settings.php:19
+msgid "Manage your APP ID here: "
+msgstr ""
+
+#: includes/settings.php:19
+msgid "Please note that a paid account is required if your site currency is not USD."
+msgstr ""
+
+#. translators: %s: The local price in the user's currency.
+#: pmpro-local-pricing.php:187
+msgid "In your local currency, the price is <strong>~%s</strong>."
+msgstr ""
+
+#. translators: 1: The local price for the initial payment in the user's currency. 2: The local price for the recurring price in the user's currency. 3: The billing period.
+#: pmpro-local-pricing.php:198
+msgid "In your local currency, the price is <strong>~%1$s</strong> now and then <strong>~%2$s per %3$s</strong>."
+msgstr ""
+
+#: pmpro-local-pricing.php:208
+msgid "Your actual price will be converted at checkout based on current exchange rates."
+msgstr ""
+
+#. translators: %s: The discount code for the user's country.
+#: pmpro-local-pricing.php:215
+msgid "Use the discount code %s to receive a discounted regional price."
+msgstr ""
+
+#: pmpro-local-pricing.php:290
+#: pmpro-local-pricing.php:294
+#: pmpro-local-pricing.php:368
+msgid "Sorry, you do not qualify to redeem this discount code."
+msgstr ""
+
+#. translators: %s: The discount code entered by the user.
+#: pmpro-local-pricing.php:303
+msgid "Sorry, you do not qualify to redeem this discount code: %s"
+msgstr ""
+
+#: pmpro-local-pricing.php:398
+msgid "Data collected to show localized pricing at checkout."
+msgstr ""
+
+#: pmpro-local-pricing.php:399
+msgid "At checkout, we will use your IP address to find your general location to show a localized rate in your local currency for your convenience. This information is stored temporarily during checkout and clears after checkout is completed."
+msgstr ""
+
+#: pmpro-local-pricing.php:430
+msgid "View Documentation"
+msgstr ""
+
+#: pmpro-local-pricing.php:430
+msgid "Docs"
+msgstr ""
+
+#: pmpro-local-pricing.php:431
+msgid "Visit Customer Support Forum"
+msgstr ""
+
+#: pmpro-local-pricing.php:431
+msgid "Support"
+msgstr ""
