@@ -174,7 +174,7 @@ function pmpro_local_get_local_cost_text( $level_id, $discount_code = false ) {
 	$local_initial = $level->initial_payment * $exchange_rate;
 	$local_billing = $level->billing_amount * $exchange_rate;
 
-	if ( $local_initial < 1 ) {
+	if ( $local_initial < 1 && $local_billing < 1 ) {
 		return;
 	}
 
