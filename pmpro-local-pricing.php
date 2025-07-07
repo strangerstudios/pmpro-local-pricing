@@ -155,6 +155,11 @@ function pmpro_local_get_local_cost_text( $level_id, $discount_code = false ) {
 	$level = pmpro_getLevelAtCheckout( intval( $level_id ), $discount_code );
 	$currency = pmpro_local_get_currency_based_on_location();
 
+	// If the level is free, let's bail.
+	if ( pmpro_isLevelFree( $level ) ) {
+		return;
+	}
+
 	// If there's no difference in the currency between the user, or unable to get the currency just bail.
 	if ( ! $currency ) {
 		return;
@@ -173,10 +178,6 @@ function pmpro_local_get_local_cost_text( $level_id, $discount_code = false ) {
 	// Let's see if a discount code is used.
 	$local_initial = $level->initial_payment * $exchange_rate;
 	$local_billing = $level->billing_amount * $exchange_rate;
-
-	if ( $local_initial < 1 ) {
-		return;
-	}
 
 	$allowed_html = array( 'strong' => array() );
 	if ( $level->initial_payment == $level->billing_amount || $level->billing_amount == 0 ) {
