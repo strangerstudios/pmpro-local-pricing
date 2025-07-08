@@ -2,9 +2,9 @@
 Contributors: strangerstudios
 Tags: pricing, geolocation, currency
 Requires at least: 5.4
-Tested up to: 6.6
+Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -30,6 +30,9 @@ Refer to the [Local Pricing Add On documentation page](https://www.paidmembershi
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-local-pricing/issues
 
 == Changelog ==
+= 1.1 - 2025-07-08 =
+* BUG FIX/ENHANCEMENT: Added improvements to the localized pricing for memberships that are less than $1 (i.e. $0.99 now and then $4.99 per month). This also improves the display of the localized currency for recurring memberships.
+* BUG FIX/ENHANCEMENT: Added improved settings/options support for Paid Memberships Pro V3.5+ and ensured backwards compatibility for earlier versions.
 
 = 1.0 - 2024-08-07 =
 * Initial release

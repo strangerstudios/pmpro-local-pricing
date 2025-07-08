@@ -3,7 +3,7 @@
  * Plugin Name: Paid Memberships Pro - Local Pricing
  * Plugin URI: https://www.paidmembershipspro.com/add-ons/local-pricing/
  * Description: Dynamically convert level pricing at checkout to the approximate rate in the visitor's local currency, as detected by their IP address and geolocation.
- * Version: 1.0
+ * Version: 1.1
  * Author: Paid Memberships Pro
  * Author URI: https://www.paidmembershipspro.com
  * Text Domain: pmpro-local-pricing
@@ -11,7 +11,7 @@
  * License: GPL-3.0
  */
 
-define( 'PMPRO_LOCAL_PRICING_VERSION', '1.0' );
+define( 'PMPRO_LOCAL_PRICING_VERSION', '1.1' );
 
 require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/currencies.php';
