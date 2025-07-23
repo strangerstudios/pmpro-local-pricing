@@ -10,7 +10,7 @@
  * This helps support Paid Memberships Pro V3.5+ and older versions.
  * Note: This function can be removed and deprecated in a future version of the plugin.
  *
- * @since TBD
+ * @since 1.1
  */
 function pmpro_local_backwards_compatibility_settings() {
 	if ( version_compare( PMPRO_VERSION, '3.5', '<' ) ) {
@@ -26,7 +26,7 @@ add_action( 'init', 'pmpro_local_backwards_compatibility_settings' );
 /**
  * Show the App ID in the Payment Settings, this helps resolve backwards compatibility issues for Paid Memberships Pro V3.5+
  * 
- * @since TBD
+ * @since 1.1
  * 
  */
 function pmpro_local_show_option_fields() {
