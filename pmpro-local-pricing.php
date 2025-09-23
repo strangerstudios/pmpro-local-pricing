@@ -41,7 +41,13 @@ function pmpro_local_get_users_location_from_IP() {
 	}
 
 	$geolocate = new Reader( plugin_dir_path( __FILE__ ) . 'includes/GeoLite2-Country.mmdb' );
-	$results   = $geolocate->country( $user_ip );
+	
+	// Try to get the results and bail if there's an error.
+	try {
+		$results = $geolocate->country( $user_ip );
+	} catch ( Exception $e ) {
+		return;
+	}
 
 	// Let's get the country code now.
 	$country = $results->country->isoCode;
