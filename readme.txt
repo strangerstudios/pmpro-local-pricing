@@ -30,6 +30,10 @@ Refer to the [Local Pricing Add On documentation page](https://www.paidmembershi
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-local-pricing/issues
 
 == Changelog ==
+= 1.1.1 - 2025-09-23 =
+* BUG FIX: Resolved an issue where localized pricing messages were not displaying correctly for recurring memberships with a billing frequency greater than one (e.g., every 2 months). (Props @andrewlimaza)
+* BUG FIX: Prevented a fatal error during checkout geolocation by wrapping the process in a try/catch. (Props @ideadude)
+
 = 1.1 - 2025-07-08 =
 * BUG FIX/ENHANCEMENT: Added improvements to the localized pricing for memberships that are less than $1 (i.e. $0.99 now and then $4.99 per month). This also improves the display of the localized currency for recurring memberships.
 * BUG FIX/ENHANCEMENT: Added improved settings/options support for Paid Memberships Pro V3.5+ and ensured backwards compatibility for earlier versions.
