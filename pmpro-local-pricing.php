@@ -201,11 +201,12 @@ function pmpro_local_get_local_cost_text( $level_id, $discount_code = false ) {
 		$cost = '<p id="pmpro-local-exchange-rate">';
 		$cost .= wp_kses(
 			sprintf(
-				/* translators: 1: The local price for the initial payment in the user's currency. 2: The local price for the recurring price in the user's currency. 3: The billing period. */
-				__( 'In your local currency, the price is <strong>~%1$s</strong> now and then <strong>~%2$s per %3$s</strong>.', 'pmpro-local-pricing' ),
+				/* translators: 1: The local price for the initial payment in the user's currency. 2: The local price for the recurring price in the user's currency. 3: The billing period. 4: The billing frequency */
+				__( 'In your local currency, the price is <strong>~%1$s</strong> now and then <strong>~%2$s %4$s %3$s</strong>.', 'pmpro-local-pricing' ),
 				$currency . ' ' . pmpro_round_price_as_string( $local_initial ),
 				$currency . ' ' . pmpro_round_price_as_string( $local_billing ),
-				$level->cycle_period
+				pmpro_translate_billing_period( $level->cycle_period, $level->cycle_number ),
+				$level->cycle_number > 1 ? sprintf( esc_html__( 'every %d', 'pmpro-local-pricing' ), $level->cycle_number ) : esc_html__( 'per', 'pmpro-local-pricing' ) // Figure out if it's every X months or per month.
 			),
 			$allowed_html
 		);
