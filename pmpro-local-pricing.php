@@ -113,16 +113,36 @@ function pmpro_local_exchange_rate( $site_currency, $currency ) {
 		return $exchange_rate->$currency;
 	}
 
-	$raw_url = 'https://openexchangerates.org/api/latest.json';
-
-	// Make a remote request to openexchangerate.org
-	$params = array(
-		'app_id' => esc_attr( get_option( 'pmpro_local_pricing_app_id' ) ),
-		'base'   => $site_currency,
-	);
-
-	// add query args
-	$url = add_query_arg( $params, $raw_url );
+	/**
+	 * Filter to use a custom exchange rate API.
+	 * 
+	 * The API must return JSON in this format:
+	 * {
+	 *   "rates": {
+	 *     "USD": 1,
+	 *     "EUR": 0.85,
+	 *     "GBP": 0.73
+	 *   }
+	 * }
+	 * 
+	 * Note: APIs that use concatenated currency codes (e.g., "USDEUR": 0.85) are not supported.
+	 * 
+	 * @param string $custom_api_url The custom API URL (should include API key if needed).
+	 */
+	$custom_api_url = apply_filters( 'pmpro_local_pricing_custom_api_url', '' );
+	
+	if ( ! empty( $custom_api_url ) ) {
+		$url = $custom_api_url;
+	} else {
+		// Use default Open Exchange Rates with app_id and base
+		$app_id = apply_filters( 'pmpro_local_pricing_app_id', get_option( 'pmpro_local_pricing_app_id' ) );
+		$raw_url = 'https://openexchangerates.org/api/latest.json';
+		$params = array(
+			'app_id' => esc_attr( $app_id ),
+			'base'   => $site_currency,
+		);
+		$url = add_query_arg( $params, $raw_url );
+	}
 
 	// Let's get the exchange data now.
 	$response = wp_remote_get( $url );
@@ -139,6 +159,9 @@ function pmpro_local_exchange_rate( $site_currency, $currency ) {
 	$response_body = json_decode( wp_remote_retrieve_body( $response ) );
 
 	// Get the exchange rate for the currency.
+	if ( empty( $response_body->rates ) ) {
+		return false;
+	}
 	$exchange_rate = $response_body->rates;
 
 	// Set the transient for this currency.
