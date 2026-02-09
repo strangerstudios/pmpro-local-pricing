@@ -13,7 +13,7 @@
  * @since 1.1
  */
 function pmpro_local_backwards_compatibility_settings() {
-	if ( version_compare( PMPRO_VERSION, '3.5', '<' ) ) {
+	if ( defined( 'PMPRO_VERSION' ) && version_compare( PMPRO_VERSION, '3.5', '<' ) ) {
 		// The previous version of loading the setting has been adjusted. Keeping this function for any custom code (such as function exist checks etc.)
 		function pmpro_local_payment_option_fields( $options, $gateway ) {
 			echo pmpro_local_show_option_fields();
