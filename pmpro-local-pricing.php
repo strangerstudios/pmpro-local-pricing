@@ -105,6 +105,25 @@ function pmpro_local_get_currency_based_on_location() {
  */
 function pmpro_local_exchange_rate( $site_currency, $currency ) {
 
+	/**
+	 * Filter to short-circuit the exchange rate lookup.
+	 *
+	 * Return a numeric value to skip the default Open Exchange Rates API call
+	 * and the plugin's transient cache. This lets developers use any rate source
+	 * (alternative API, local data, hardcoded values, etc.) without having to
+	 * match the Open Exchange Rates JSON shape.
+	 *
+	 * @since TBD
+	 *
+	 * @param mixed  $exchange_rate Default null. Return a numeric rate to short-circuit, or false to short-circuit with "no rate available".
+	 * @param string $site_currency The site's base currency.
+	 * @param string $currency      The user's currency.
+	 */
+	$exchange_rate = apply_filters( 'pmpro_local_pricing_custom_exchange_rate', null, $site_currency, $currency );
+	if ( null !== $exchange_rate ) {
+		return $exchange_rate;
+	}
+
 	// Get transient for this currency ( 1 hour )
 	$exchange_rate = get_transient( 'pmpro_local_exchange_rate_' . $site_currency );
 
@@ -137,6 +156,11 @@ function pmpro_local_exchange_rate( $site_currency, $currency ) {
 
 	// Get the body of the response.
 	$response_body = json_decode( wp_remote_retrieve_body( $response ) );
+
+	// If the response body is empty or doesn't contain rates, bail.
+	if ( empty( $response_body->rates ) ) {
+		return false;
+	}
 
 	// Get the exchange rate for the currency.
 	$exchange_rate = $response_body->rates;
