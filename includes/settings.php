@@ -5,6 +5,10 @@
  * 
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Loads the relevant settings for the Local Pricing Add On based on PMPro core version.
  * This helps support Paid Memberships Pro V3.5+ and older versions.
@@ -16,7 +20,7 @@ function pmpro_local_backwards_compatibility_settings() {
 	if ( defined( 'PMPRO_VERSION' ) && version_compare( PMPRO_VERSION, '3.5', '<' ) ) {
 		// The previous version of loading the setting has been adjusted. Keeping this function for any custom code (such as function exist checks etc.)
 		function pmpro_local_payment_option_fields( $options, $gateway ) {
-			echo pmpro_local_show_option_fields();
+			echo pmpro_local_show_option_fields(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The function echoes its own escaped markup and returns null.
 		}
 		add_action( 'pmpro_payment_option_fields', 'pmpro_local_payment_option_fields', 10, 2 );
 	}
@@ -52,6 +56,6 @@ add_action( 'pmpro_after_payment_settings', 'pmpro_local_show_option_fields' );
  * @since 1.0
  */
 function pmpro_local_payment_options_save( $values ) {
-    update_option( 'pmpro_local_pricing_app_id', sanitize_text_field( $_REQUEST['pmpro_local_app_id'] ) );
+    update_option( 'pmpro_local_pricing_app_id', isset( $_REQUEST['pmpro_local_app_id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['pmpro_local_app_id'] ) ) : '' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce and capability verified in PMPro adminpages/paymentsettings.php before pmpro_after_saved_payment_options fires.
 }
 add_action( 'pmpro_after_saved_payment_options', 'pmpro_local_payment_options_save' );

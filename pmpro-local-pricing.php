@@ -11,6 +11,10 @@
  * License: GPL-3.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 define( 'PMPRO_LOCAL_PRICING_VERSION', '1.1.2' );
 
 require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
@@ -283,16 +287,16 @@ function pmpro_local_insert_local_price_div( $cost, $level, $tags, $short ) {
 	}
 
 	// Only filter the checkout page or applydiscoutcode AJAX call.
-	if ( ! pmpro_is_checkout() && ( empty( $_REQUEST['action'] ) || $_REQUEST['action'] !== 'applydiscountcode' ) ) {
+	if ( ! pmpro_is_checkout() && ( empty( $_REQUEST['action'] ) || $_REQUEST['action'] !== 'applydiscountcode' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only routing check for the public applydiscountcode AJAX request.
 		return $cost;
 	}
 
 	$cost .= '<div id="pmpro-local-price">';
 
 	// If we're applying a discount code, insert the local price now.
-	if ( ! empty( $_REQUEST['action'] ) && $_REQUEST['action'] === 'applydiscountcode' ) {
+	if ( ! empty( $_REQUEST['action'] ) && $_REQUEST['action'] === 'applydiscountcode' ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only routing check for the public applydiscountcode AJAX request.
 		$cost .= '<div class="' . esc_attr( pmpro_get_element_class( 'pmpro-local-price_inner' ) ) . '">';
-		$cost .= pmpro_local_get_local_cost_text( $level->id, sanitize_text_field( $_REQUEST['code'] ) );
+		$cost .= pmpro_local_get_local_cost_text( $level->id, isset( $_REQUEST['code'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['code'] ) ) : false ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only price display for the public applydiscountcode AJAX request.
 		$cost .= '</div>';
 	}
 
