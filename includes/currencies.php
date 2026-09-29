@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 // Map country codes to currency
 function pmpro_local_currency_list() {
 	$country_list = array(
