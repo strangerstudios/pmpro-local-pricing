@@ -56,6 +56,11 @@ add_action( 'pmpro_after_payment_settings', 'pmpro_local_show_option_fields' );
  * @since 1.0
  */
 function pmpro_local_payment_options_save( $values ) {
+	// The App ID field is not shown when saving a single gateway's settings, so don't overwrite it.
+	if ( ! isset( $_REQUEST['pmpro_local_app_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce and capability verified in PMPro adminpages/paymentsettings.php before pmpro_after_saved_payment_options fires.
+		return;
+	}
+
 	update_option( 'pmpro_local_pricing_app_id', isset( $_REQUEST['pmpro_local_app_id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['pmpro_local_app_id'] ) ) : '' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce and capability verified in PMPro adminpages/paymentsettings.php before pmpro_after_saved_payment_options fires.
 }
 add_action( 'pmpro_after_saved_payment_options', 'pmpro_local_payment_options_save' );
