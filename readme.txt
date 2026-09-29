@@ -2,9 +2,9 @@
 Contributors: strangerstudios
 Tags: pricing, geolocation, currency
 Requires at least: 5.4
-Tested up to: 6.9
+Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -30,6 +30,9 @@ Refer to the [Local Pricing Add On documentation page](https://www.paidmembershi
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-local-pricing/issues
 
 == Changelog ==
+= 1.1.3 - 2026-09-29 =
+* SECURITY: Improved sanitization and escaping throughout the plugin to resolve Plugin Check security findings. #18 (@dparker1005)
+
 = 1.1.2 - 2026-05-15 =
 * ENHANCEMENT: Added a new filter `pmpro_local_pricing_custom_exchange_rate` that allows developers to short-circuit the exchange rate lookup with a custom rate source (alternative API, local data, hardcoded values, etc.). #17 (@dparker1005)
 * BUG FIX/ENHANCEMENT: Added a defensive check to prevent a stale transient from being set when the exchange rate API response is missing the `rates` property. #17 (@dparker1005)
