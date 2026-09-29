@@ -32,6 +32,7 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 == Changelog ==
 = 1.1.3 - 2026-09-29 =
 * SECURITY: Improved sanitization and escaping throughout the plugin to resolve Plugin Check security findings. #18 (@dparker1005)
+* BUG FIX: Fixed an issue where saving an individual payment gateway's settings in Paid Memberships Pro 3.5+ would clear the Local Pricing App ID. #19 (@dparker1005)
 
 = 1.1.2 - 2026-05-15 =
 * ENHANCEMENT: Added a new filter `pmpro_local_pricing_custom_exchange_rate` that allows developers to short-circuit the exchange rate lookup with a custom rate source (alternative API, local data, hardcoded values, etc.). #17 (@dparker1005)
